@@ -17,7 +17,7 @@ Modern tasarımı, kullanıcı dostu arayüzü ve esnek yapısıyla iş takibini
 
 ## 🖼️ Ekran Görüntüsü
 
-![TaskFlow Screenshot](kanban-board.png)
+![Ekran Görüntüsü](FlowBoard\kanban-board.png)
 
 ## 🛠️ Kullanılan Teknolojiler
 
