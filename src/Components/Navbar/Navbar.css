@@ -1,15 +1,30 @@
+/* Navbar.css */
 .navbar-main {
-    font-family: 'Montserrat', sans-serif;
-    height: 70px;
+  font-family: 'Montserrat', sans-serif;
+  height: 70px;
+  position: fixed; /* Sabit navbar */
+    justify-content: space-between; /* Burası eksikti */
+
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(200, 191, 203);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
 }
 
 .navbar-options-dropdown {
-    padding: 20px 30px 20px;
-    position: 'absolute';
-    z-index: 97;
+      position: relative; /* Dropdown için göreceli konum */
+
 }
 
 .navbar-options {
+      position: absolute;
+        top: 100%;
+        left: 0;
     border: 1px solid rgba(0, 0, 0, .3);
     display: flex;
     flex-direction: column;
@@ -23,6 +38,8 @@
     box-shadow:  0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color:rgba(60, 60, 60, 0.8);
     font-size: 14px;
+    z-index: 9999; /* dashboard altında kalmaması için */
+
 }
 
 .navbar-option {
@@ -40,10 +57,10 @@
     justify-content: center;
     align-items: center;
     outline: none;
-    background-color: rgb(253, 253, 253);
+    background-color: rgb(140, 151, 181);
     padding: 2px 5px;
     border-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, .3);
+    border: 1px solid rgba(50, 3, 56, 0.3);
     margin-left: 1px;
 }
 
@@ -55,15 +72,19 @@
 
 @media screen and (max-width: 920px) {
     .navbar-main {
-        height: 0px;
-        width: 100%;
-    }
-    
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 15px;
+}
+
     .navbar-options-dropdown {
         padding: 10px 15px 10px;
     }
     
     .navbar-options {
+          position: absolute;
+  top: 100%;
+  left: 0;
         padding: 5px 15px;
         margin: 4px 0px;
         font-size: 12px;
@@ -75,4 +96,76 @@
         margin: 4px 0;
         justify-content: space-around;
     }
+}
+.navbar-add-task {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.navbar-add-task button {
+  position: relative;
+  z-index: 10000;
+  pointer-events: auto;
+}
+.navbar-task-form {
+position: absolute;
+  top: 60px;
+  right: 20px;
+  background: rgba(61, 69, 123, 0.394);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 1050; /* navbar’dan yüksek olmalı */
+}
+
+.add-task-form input {
+  width: 200px;
+  padding: 8px;
+  font-size: 16px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1100;
+  position: relative;
+}
+.navbar-search-input {
+  padding: 6px 10px;
+  margin-right: 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 180px;
+}
+
+.navbar-search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0,123,255,0.5);
+}
+.navbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+/* Navbar.css */
+.navbar {
+  backdrop-filter: blur(10px);
+  background: rgba(79, 70, 229, 0.85);
+  border-radius: 12px;
+  padding: 10px 20px;
+  color: rgba(62, 114, 122, 0.714);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

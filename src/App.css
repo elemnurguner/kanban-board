@@ -1,3 +1,106 @@
 .App {
   text-align: center;
 }
+/* Base Styles */
+.app-container {
+  min-height: 100vh;
+  transition: background-color 0.3s ease;
+}
+
+.app-container.dark {
+  background-color: #1a202c;
+  color: #f7fafc;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 70px);
+  gap: 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #2a75f3;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error Fallback */
+.error-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.error-fallback button {
+  padding: 10px 20px;
+  background-color: #2a75f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Dark Mode Overrides */
+.dark-mode {
+  background-color: #1a202c;
+  color: #f7fafc;
+}
+
+.dark-mode .navbar-main {
+  background-color: #2d3748;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .app-container {
+    padding-top: 60px;
+  }
+  
+  .loading-indicator {
+    height: calc(100vh - 60px);
+  }
+}
+/* Dark Mode için global stiller */
+body.dark-mode {
+  background-color: #1a202c;
+  color: #f7fafc;
+}
+
+body.dark-mode .dashboard-main {
+  background-color: #1a202c;
+}
+
+body.dark-mode .navbar-main {
+  background-color: #2d3748;
+  color: #f7fafc;
+}
+
+body.dark-mode .ticket-main {
+  background-color: #2d3748;
+  color: #f7fafc;
+  border-color: #4a5568;
+}
+
+/* Metin renkleri için ek güvenlik */
+body.dark-mode .ticket-id,
+body.dark-mode .priority-text,
+body.dark-mode .user-name {
+  color: #cbd5e0 !important;
+}

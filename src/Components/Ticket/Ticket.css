@@ -66,3 +66,86 @@
 .ticket-id {
     color:rgba(0, 0, 0, .8);
 }
+/* Ticket.css */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 12px;
+  color: #666;
+}
+
+.ticket-meta {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #999;
+}
+/* src/Components/Ticket/Ticket.css */
+.ticket-card {
+  position: relative; /* Kartlar konumlanabilir hale geliyor */
+  z-index: 10; /* Diğer içeriklerin üstünde kalmasını sağlıyor */
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 6px solid #6366F1;
+}
+
+.ticket-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
+}
+
+.ticket-tag {
+  background-color: #E0E7FF;
+  color: #3730A3;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-right: 5px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.ticket-card.dragging {
+  position: absolute;
+  z-index: 999; /* En öne getirdik */
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(79, 70, 229, 0.4);
+  pointer-events: none;
+  transition: none;
+}
+.ticket-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ortalanmış ticket */
+  gap: 12px;
+  padding: 16px;
+  min-height: 300px;
+  position: relative;
+  background-color: #0f172a; /* koyu arka plan */
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+}
+.ticket-card {
+  width: 90%;
+  background-color: #1e293b;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ticket-card:active {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}

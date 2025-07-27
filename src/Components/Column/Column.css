@@ -1,0 +1,19 @@
+/* src/components/Column/Column.css */
+.column {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px;
+}
+
+.column.dark {
+  background: #2d3748;
+}
+
+.tasks-list {
+  margin-top: 12px;
+}
+
+.new-ticket {
+  border-left: 3px solid #3b82f6;
+}

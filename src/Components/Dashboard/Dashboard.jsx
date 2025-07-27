@@ -1,240 +1,139 @@
-import React from 'react'
-import {useState, useEffect} from 'react'
-import "./Dashboard.css"
-import List from '../List/List'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import AddIcon from '@mui/icons-material/Add';
-import InfoIcon from '@mui/icons-material/Info';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import React, { useMemo } from "react";
+import './Dashboard.css';
+import '../Ticket/Ticket.css';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { TAG_COLORS } from '../../constants/tagColors';
 
-function Dashboard({statuses, priorities, priorityScores, grouping, ordering}) {
-    const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState({"tickets": [],
-        "users": []  
-    })
+function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [], onDragEnd, searchTerm = '' }) {
 
-    // fetch data from API
-    useEffect(() => {
-        fetch("https://api.quicksell.co/v1/internal/frontend-assignment")
-        .then(response => {
-          if(response.ok) {
-            return response.json();
-          }
-          throw response
-        })
-        .then(response => {
-          setData(response)
-          setLoading(false)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      }, [])
+  // Arama filtreleme: searchTerm varsa tasks'i filtrele
+  const filteredTasks = tasks.filter(task => {
+    const search = searchTerm.toLowerCase();
 
-    // state variable to hold currently grouped and ordered lists - array of lists
-    const [ticketMap, setTicketMap] = useState([])
+    const titleMatch = task.title?.toLowerCase().includes(search);
+    const descriptionMatch = task.description?.toLowerCase().includes(search);
 
-    // comparator function to order tickets on title in lexiographic ascending order
-    function cmpTitle(a, b) {
-        return a.title.localeCompare(b.title);
+    const user = users.find(u => u.id === task.userId);
+    const userMatch = user?.name?.toLowerCase().includes(search);
+
+    const statusMatch = task.status?.toLowerCase().includes(search);
+    const priorityName = priorityMap?.[task.priority]?.toLowerCase() || '';
+    const priorityMatch = priorityName.includes(search);
+
+    return titleMatch || descriptionMatch || userMatch || statusMatch || priorityMatch;
+  });
+
+  // Gruplama & sıralama filtreden sonra filteredTasks üzerinden yapılır
+  const ticketMap = useMemo(() => {
+    if (!filteredTasks.length) return [];
+
+    let groupedData = [];
+    switch (grouping) {
+      case "Status":
+        groupedData = statuses.map(status =>
+          filteredTasks.filter(t => t.status === status)
+        );
+        break;
+      case "User":
+        groupedData = users.map(user =>
+          filteredTasks.filter(t => t.userId === user.id)
+        );
+        break;
+      case "Priority":
+        groupedData = [0, 1, 2, 3, 4].map(priority =>
+          filteredTasks.filter(t => t.priority === priority)
+        );
+        break;
+      default:
+        groupedData = [filteredTasks];
     }
 
-    // comparator function to order objects on priority in descending order
-    function cmpPriority(a, b) {
-        return b.priority - a.priority;
-    }
+    return groupedData.map(group => {
+      const sorted = [...group];
+      if (ordering === "Title") {
+        sorted.sort((a, b) => a.title.localeCompare(b.title));
+      } else if (ordering === "Priority") {
+        sorted.sort((a, b) => b.priority - a.priority);
+      }
+      return sorted;
+    });
+  }, [filteredTasks, grouping, ordering, statuses, users]);
 
-    // group data on status and order on title
-    let statusTicketMapTitle = () => {
-        let obj = []
-        statuses.forEach(status => {
-            let tmp = [];
-            data['tickets'].forEach(ticket => {
-                if(status === ticket.status) tmp.push(ticket)
-            })
-            tmp.sort(cmpTitle)
-            obj.push(tmp)
-        });
-        setTicketMap(obj)
+  // Diğer kod aynen kalır...
+  const getGroupTitle = (idx) => {
+    switch (grouping) {
+      case "Status": return statuses[idx] || `Group ${idx + 1}`;
+      case "User": return users[idx]?.name || `User ${idx + 1}`;
+      case "Priority": return priorityMap?.[idx] || `Priority ${idx}`;
+      default: return `Group ${idx + 1}`;
     }
-
-    // group data on status and order on priority
-    let statusTicketMapPriority = () => {
-        let obj = []
-        statuses.forEach(status => {
-            let tmp = [];
-            data['tickets'].forEach(ticket => {
-                if(status === ticket.status) tmp.push(ticket)
-            })
-            tmp.sort(cmpPriority)
-            obj.push(tmp)
-        });
-        setTicketMap(obj)
-    }
-
-    // group data on users and order on title
-    let userTicketMapTitle = () => {
-        let obj = []
-        data['users'].forEach(user => {
-            let tmp = [];
-            data['tickets'].forEach(ticket => {
-                if(user.id === ticket.userId) tmp.push(ticket)
-            })
-            tmp.sort(cmpTitle)
-            obj.push(tmp)
-        });
-        setTicketMap(obj)
-    }
-
-    // group data on users and order on priority
-    let userTicketMapPriority = () => {
-        let obj = []
-        data['users'].forEach(user => {
-            let tmp = [];
-            data['tickets'].forEach(ticket => {
-                if(user.id === ticket.userId) tmp.push(ticket)
-            })
-            tmp.sort(cmpPriority)
-            obj.push(tmp)
-        });
-        setTicketMap(obj)
-    }
-
-    // group data on priority and order on title
-    let priorityTicketMapTitle = () => {
-        let obj = []
-        priorityScores.forEach(priority => {
-            let tmp = [];
-            data['tickets'].forEach(ticket => {
-                if(priority === ticket.priority) tmp.push(ticket)
-            })
-            tmp.sort(cmpTitle)
-            obj.push(tmp)
-        });
-        setTicketMap(obj)
-    }
-
-    // group data on priority and order on priority
-    let priorityTicketMapPriority = () => {
-        let obj = []
-        priorityScores.forEach(priority => {
-            let tmp = [];
-            data['tickets'].forEach(ticket => {
-                if(priority === ticket.priority) tmp.push(ticket)
-            })
-            tmp.sort(cmpPriority)
-            obj.push(tmp)
-        });
-        setTicketMap(obj)
-    }
-
-    // re-render data when user chooses an option in the navbar dropdown
-    useEffect(() => {
-        if(grouping === 'Status' && ordering === 'Priority') {
-            statusTicketMapPriority()
-        } else if(grouping === 'Status' && ordering === 'Title') {
-            statusTicketMapTitle()
-        } else if(grouping === 'User' && ordering === 'Priority') {
-            userTicketMapPriority()
-        } else if(grouping === 'User' && ordering === 'Title') {
-            userTicketMapTitle()
-        } else if(grouping === 'Priority' && ordering === 'Priority') {
-            priorityTicketMapPriority()
-        } else if(grouping === 'Priority' && ordering === 'Title') {
-            priorityTicketMapTitle()
-        }
-    }, [grouping, ordering])
-
-    // to set the initial view of dashboard on first render after the data from the API has been fetched
-    useEffect(() => {
-        // statusTicketMapTitle()
-        if(grouping === 'Status' && ordering === 'Priority') {
-            statusTicketMapPriority()
-        } else if(grouping === 'Status' && ordering === 'Title') {
-            statusTicketMapTitle()
-        } else if(grouping === 'User' && ordering === 'Priority') {
-            userTicketMapPriority()
-        } else if(grouping === 'User' && ordering === 'Title') {
-            userTicketMapTitle()
-        } else if(grouping === 'Priority' && ordering === 'Priority') {
-            priorityTicketMapPriority()
-        } else if(grouping === 'Priority' && ordering === 'Title') {
-            priorityTicketMapTitle()
-        }
-    }, [data])
-    
-    // to deal with async API call. while the data has not been fetched, loading is displayed
-    if (isLoading) {
-        return <div className="App">Loading...</div>;
-    }
+  };
 
   return (
-    <div className='dashboard-main'>
-        {grouping === "Status" ? 
-            ticketMap.map((ticketList, key) => {
-                return (
-                <div className='dashboard-list'>
-                    <div className='dashboard-list-header-controls'>
-                        <div className='dashboard-list-header-controls-info'>
-                            <InfoIcon color="secondary"/>
-                            <b><p className='dashboard-list-header'>{statuses[key]}</p></b>
-                            <div className='dashboard-list-items-count'>{ticketList.length}</div>
-                        </div>
-                        {ticketList.length !== 0 && <div>
-                            <AddIcon sx={{ color: "#808080"}}/>
-                            <MoreHorizIcon sx={{ color: "#808080"}}/>
-                        </div>}
-                    </div>
-                    <List key={key} ticketList={ticketList} />
-                </div>
-                )
-            })
-        :
-        grouping === 'User' ? 
-            ticketMap.map((ticketList, key) => {
-                return (
-                <div className='dashboard-list'>
-                    <div className='dashboard-list-header-controls'>
-                            <div className='dashboard-list-header-controls-info'>
-                                <AccountCircleIcon sx={{ color: '#9d9df4' }}/>
-                                <b><p className='dashboard-list-header'>{data['users'][key].name}</p></b>
-                                <div className='dashboard-list-items-count'>{ticketList.length}</div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className="dashboard-main">
+        {ticketMap.map((ticketList, idx) => (
+          <Droppable droppableId={String(idx)} key={idx}>
+            {(provided) => (
+              <div
+                className="dashboard-list"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <h3>{getGroupTitle(idx)} ({ticketList.length})</h3>
+
+                {ticketList.map((ticket, index) => (
+                  <Draggable key={ticket.id} draggableId={ticket.id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="ticket-container"
+                      >
+                        <div className="ticket-main">
+                          <div className="ticket-header">
+                            <div className="ticket-id">{ticket.id}</div>
+                            {grouping !== "User" && (
+                              <div className="ticket-user">
+                                {users.find(u => u.id === ticket.userId)?.name || "Unknown"}
+                              </div>
+                            )}
+                          </div>
+                          <div className="ticket-content">
+                            <div className="ticket-title"><b>{ticket.title}</b></div>
+                            {grouping !== "Priority" && (
+                              <div className="ticket-priority">
+                                Priority: {priorityMap?.[ticket.priority] || "N/A"}
+                              </div>
+                            )}
+
+                            <div className="ticket-tags">
+                              {ticket.tag && ticket.tag.map((tag, i) => (
+                                <span
+                                  key={i}
+                                  className="ticket-tag"
+                                  style={{ backgroundColor: TAG_COLORS[tag] || '#ccc' }}
+                                >
+                                  {tag}
+                                </span>
+                              ))}
                             </div>
-                            {ticketList.length !== 0 && <div>
-                                <AddIcon sx={{ color: "#808080"}}/>
-                                <MoreHorizIcon sx={{ color: "#808080"}}/>
-                            </div>}
+
+                          </div>
                         </div>
-                    <List key={key} ticketList={ticketList} />
-                </div>
-                )
-            })
-        :
-        grouping === 'Priority' ? 
-            ticketMap.map((ticketList, key) => {
-                return (
-                <div className='dashboard-list'>
-                    <div className='dashboard-list-header-controls'>
-                            <div className='dashboard-list-header-controls-info'>
-                                <PriorityHighIcon sx={{ fontSize: "20px"}}/>
-                                <b><p className='dashboard-list-header'>{priorities[key]}</p></b>
-                                <div className='dashboard-list-items-count'>{ticketList.length}</div>
-                            </div>
-                            {ticketList.length !== 0 && <div>
-                                <AddIcon sx={{ color: "#808080"}}/>
-                                <MoreHorizIcon sx={{ color: "#808080"}}/>
-                            </div>}
-                        </div>
-                    <List key={key} ticketList={ticketList} />
-                </div>
-                )
-            })
-        :
-        (<span></span>)
-        }
-    </div>
-  )
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        ))}
+      </div>
+    </DragDropContext>
+  );
 }
 
-export default Dashboard
+export default Dashboard;

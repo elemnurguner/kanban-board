@@ -1,60 +1,126 @@
-import React from 'react'
-import { useState } from 'react'
-import "./Navbar.css"
+import React, { useState } from 'react';
+import "./Navbar.css";
 import TuneIcon from '@mui/icons-material/Tune';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import AddTaskForm from '../AddTaskForm/AddTaskForm';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-function Navbar({setGrouping, setOrdering}) {
-  // available grouping and ordering options
-  let groupingOptions = ['Status', 'User', 'Priority']
-  let orderingOptions = ['Title', 'Priority']
+function Navbar({ 
+  setGrouping, 
+  setOrdering, 
+  onAddTask,
+  darkMode,
+  setDarkMode,
+  searchTerm,
+  setSearchTerm
+}) {
+  const groupingOptions = ['Status', 'User', 'Priority'];
+  const orderingOptions = ['Title', 'Priority'];
+  
+  const [optionsView, setOptionsView] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
-  // default view for the options under display is hidden
-  const [optionsView, toggleOptionsView] = useState(false)
+  const toggleOptions = () => setOptionsView(!optionsView);
+  const toggleForm = () => setShowForm(!showForm);
 
-  // toggle the view of options under display
-  let toggleOptions = () => {
-    toggleOptionsView(!optionsView)
-  }
+  const handleGroupingChange = (e) => {
+    const value = e.target.value;
+    localStorage.setItem("grouping", value);
+    setGrouping(value);
+  };
+
+  const handleOrderingChange = (e) => {
+    const value = e.target.value;
+    localStorage.setItem("ordering", value);
+    setOrdering(value);
+  };
+
+  const handleTaskSubmit = (task) => {
+    onAddTask(task);
+    setShowForm(false);
+  };
 
   return (
     <div className='navbar-main'>
-        <div className='navbar-options-dropdown'>
-          <button id="navbar-dropdown-button" onClick={() => toggleOptions()}>
-              <TuneIcon sx={{fontSize: "18px"}} />
-              <p id="navbar-dropdown-text">Display</p>
-              <ArrowDropDownIcon />
-            </button>
-          {optionsView 
-          && 
+      <div className='navbar-options-dropdown'>
+        <button 
+          id="navbar-dropdown-button" 
+          onClick={toggleOptions}
+          aria-label="Display options"
+        >
+          <TuneIcon sx={{ fontSize: "18px" }} />
+          <span id="navbar-dropdown-text">Göster</span>
+          <ArrowDropDownIcon />
+        </button>
+
+        {optionsView && (
           <div className='navbar-options'>
             <div className='navbar-option'>
-              <label htmlFor="grouping">Grouping</label>
-
-              <select name="grouping" id="grouping" onChange={e => {localStorage.setItem("grouping", e.target.value);setGrouping(e.target.value)}}>
-                {localStorage.getItem('grouping') && <option>{localStorage.getItem('grouping')}</option>}
-                {groupingOptions.map((group, key) => {
-                  return localStorage.getItem('grouping') !== group && <option key={key} value={group}>{group}</option>
-                })}
+              <label htmlFor="grouping">Grup</label>
+              <select
+                id="grouping"
+                value={localStorage.getItem('grouping') || 'Status'}
+                onChange={handleGroupingChange}
+              >
+                {groupingOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
               </select>
             </div>
+
             <div className='navbar-option'>
-              <div>
-                <label htmlFor="ordering">Ordering</label>
-              </div>
-              <div>
-                <select name="ordering" id="ordering" onChange={e => {localStorage.setItem("ordering", e.target.value );setOrdering(e.target.value)}}>
-                  {localStorage.getItem('ordering') && <option>{localStorage.getItem('ordering')}</option>}
-                  {orderingOptions.map((order, key) => {
-                    return localStorage.getItem('ordering') !== order && <option key={key} value={order}>{order}</option>
-                  })}
-                </select>
-              </div>
+              <label htmlFor="ordering">  Sıralama</label>
+              <select
+                id="ordering"
+                value={localStorage.getItem('ordering') || 'Title'}
+                onChange={handleOrderingChange}
+              >
+                {orderingOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
             </div>
-          </div>}
+          </div>
+        )}
+      </div>
+
+      <div className="navbar-controls">
+        <input
+          type="text"
+          aria-label="Search tasks"
+          placeholder="Search tasks..."
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          className="navbar-search-input"
+        />
+
+        <button 
+          onClick={() => setDarkMode(!darkMode)}
+          className="theme-toggle"
+          aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          {darkMode ? ' Açık Mod' : ' Koyu Mod'}
+        </button>
+
+        <button 
+          onClick={toggleForm}
+          className="add-task-button"
+          aria-label="Add new task"
+        >Görev Ekle </button>
+      </div>
+
+      {showForm && (
+        <div className="navbar-task-form">
+          <AddTaskForm 
+            onAdd={handleTaskSubmit} 
+            onClose={() => setShowForm(false)} 
+          />
         </div>
+      )}
     </div>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
