@@ -1,151 +1,203 @@
-.ticket-main {
-    background-color: white;
-    font-family: 'Montserrat', sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    border: 1px solid rgba(0, 0, 0, .3);
-    width: fit-content;
-    padding: 10px;
-    border-radius: 10px;
-    margin: 10px;
-    width: 250px;
-    height: 120px;
-    box-shadow:  0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.ticket-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 250px;
-}
-
-.ticket-header, .ticket-content {
-    font-size: 14px;
-    margin: 3px;
-}
-
-.ticket-content-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-.ticket-title {
-    margin-left: 4px;
-    color:rgba(0, 0, 0, .8);
-    font-size: 14px;
-}
-
-.ticket-tags {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 10px;
-    margin: 5px 0px;
-}
-
-.ticket-tag {
-    border: 1px solid rgba(0, 0, 0, .3);
-    width: fit-content;
-    padding: 4px;
-    margin-top: 2px;
-    margin-right: 3px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.ticket-id {
-    color:rgba(0, 0, 0, .8);
-}
-/* Ticket.css */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.user-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.user-name {
-  font-size: 12px;
-  color: #666;
-}
-
-.ticket-meta {
-  margin-top: 8px;
-  font-size: 11px;
-  color: #999;
-}
-/* src/Components/Ticket/Ticket.css */
-.ticket-card {
-  position: relative; /* Kartlar konumlanabilir hale geliyor */
-  z-index: 10; /* Diğer içeriklerin üstünde kalmasını sağlıyor */
-  background: white;
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-left: 6px solid #6366F1;
-}
-
-.ticket-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
-}
-
-.ticket-tag {
-  background-color: #E0E7FF;
-  color: #3730A3;
-  padding: 4px 8px;
-  border-radius: 6px;
-  margin-right: 5px;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-.ticket-card.dragging {
-  position: absolute;
-  z-index: 999; /* En öne getirdik */
-  transform: scale(1.05);
-  box-shadow: 0 12px 24px rgba(79, 70, 229, 0.4);
-  pointer-events: none;
-  transition: none;
-}
+/* ----------- COLUMN (Ticketlar için) ----------- */
 .ticket-column {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Ortalanmış ticket */
-  gap: 12px;
+  align-items: center;
   padding: 16px;
   min-height: 300px;
-  position: relative;
-  background-color: #0f172a; /* koyu arka plan */
+  background-color: #f9fafc;
   border-radius: 12px;
+  width: 320px;
+  box-sizing: border-box;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
   transition: background-color 0.3s ease;
 }
-.ticket-card {
-  width: 90%;
+
+body.dark-mode .ticket-column {
   background-color: #1e293b;
-  border-radius: 10px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px rgba(191, 0, 255, 0.12);
 }
 
-.ticket-card:active {
-  transform: scale(1.03);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+/* ----------- TICKET KARTLARI ----------- */
+.ticket-card, .ticket-main {
+  width: 100%;
+  max-width: 280px;
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 28px;
+  box-sizing: border-box;
+  color: #2d3748;
+  font-weight: 600;
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.1),
+    0 8px 12px rgba(0,0,0,0.07);
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+  min-height: 120px;
+}
+
+.ticket-card:hover, .ticket-main:hover {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow:
+    0 8px 14px rgba(0,0,0,0.15),
+    0 14px 22px rgba(0,0,0,0.1);
+  background-color: #f0f4f8;
+}
+
+body.dark-mode .ticket-card, body.dark-mode .ticket-main {
+  background-color: #2a2e42;
+  color: #d1d5db;
+  box-shadow:
+    0 4px 12px rgba(191, 0, 255, 0.15),
+    0 8px 18px rgba(191, 0, 255, 0.08);
+}
+
+body.dark-mode .ticket-card:hover, body.dark-mode .ticket-main:hover {
+  background-color: #3a3f5a;
+  box-shadow:
+    0 10px 20px rgba(191, 0, 255, 0.25),
+    0 16px 28px rgba(191, 0, 255, 0.15);
+  transform: translateY(-7px) scale(1.06);
+}
+
+/* ----------- Ticket başlığı ----------- */
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ticket-title {
+  font-size: 18px;
+  color: inherit;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* ----------- Ticket etiketleri ----------- */
+.ticket-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ticket-tag {
+  background: linear-gradient(135deg, #6f42c1, #b04de9);
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 18px;
+  box-shadow: 0 0 8px rgba(176, 77, 233, 0.5);
+  transition: background 0.3s ease;
+  cursor: default;
+}
+
+.ticket-tag:hover {
+  background: linear-gradient(135deg, #b04de9, #6f42c1);
+  box-shadow: 0 0 12px rgba(176, 77, 233, 0.75);
+}
+
+/* ----------- Kullanıcı bilgileri ----------- */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+body.dark-mode .user-info {
+  color: #a5b4fc;
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.user-avatar:hover {
+  border-color: #b04de9;
+}
+
+/* ----------- Ticket meta bilgileri ----------- */
+.ticket-meta {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 8px;
+}
+
+body.dark-mode .ticket-meta {
+  color: #c7d2fe;
+}
+
+/* ----------- Ticket Actions (Edit / Delete) ----------- */
+.ticket-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.ticket-actions button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.edit-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #2563eb;
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+body.dark-mode .edit-btn {
+  background-color: #6366f1;
+}
+
+body.dark-mode .edit-btn:hover {
+  background-color: #4f46e5;
+}
+
+body.dark-mode .delete-btn {
+  background-color: #f43f5e;
+}
+
+body.dark-mode .delete-btn:hover {
+  background-color: #e11d48;
+}
+
+/* ----------- RESPONSİVE ----------- */
+@media (max-width: 920px) {
+  .ticket-column {
+    width: 100%;
+    max-width: 500px;
+  }
 }

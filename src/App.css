@@ -1,13 +1,25 @@
 .App {
   text-align: center;
 }
+
 /* Base Styles */
 .app-container {
   min-height: 100vh;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding-top: 70px; /* Navbar yüksekliği kadar boşluk */
+  background-color: #f9fafb; /* Açık mod arka plan */
+  color: #1a202c; /* Koyu metin */
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+}
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
-.app-container.dark {
+/* Dark Mode */
+.app-container.dark,
+body.dark-mode {
   background-color: #1a202c;
   color: #f7fafc;
 }
@@ -27,7 +39,7 @@
   height: 50px;
   border: 5px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
-  border-top-color: #2a75f3;
+  border-top-color: #6f42c1;
   animation: spin 1s ease-in-out infinite;
 }
 
@@ -48,7 +60,7 @@
 
 .error-fallback button {
   padding: 10px 20px;
-  background-color: #2a75f3;
+  background-color: #6f42c1;
   color: white;
   border: none;
   border-radius: 5px;
@@ -56,15 +68,15 @@
   margin-top: 20px;
 }
 
-/* Dark Mode Overrides */
-.dark-mode {
-  background-color: #1a202c;
-  color: #f7fafc;
+.error-fallback button:hover {
+  background-color: #572a9c;
 }
 
-.dark-mode .navbar-main {
+/* Navbar Dark Mode */
+body.dark-mode .navbar-main {
   background-color: #2d3748;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  color: #f7fafc;
 }
 
 /* Responsive Adjustments */
@@ -77,19 +89,10 @@
     height: calc(100vh - 60px);
   }
 }
-/* Dark Mode için global stiller */
-body.dark-mode {
-  background-color: #1a202c;
-  color: #f7fafc;
-}
 
+/* Ticket & Dashboard Dark Mode Override */
 body.dark-mode .dashboard-main {
   background-color: #1a202c;
-}
-
-body.dark-mode .navbar-main {
-  background-color: #2d3748;
-  color: #f7fafc;
 }
 
 body.dark-mode .ticket-main {
@@ -98,7 +101,7 @@ body.dark-mode .ticket-main {
   border-color: #4a5568;
 }
 
-/* Metin renkleri için ek güvenlik */
+/* Metin renkleri dark modda */
 body.dark-mode .ticket-id,
 body.dark-mode .priority-text,
 body.dark-mode .user-name {

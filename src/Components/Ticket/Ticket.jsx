@@ -1,6 +1,7 @@
 import React from 'react';
+import './Ticket.css';
 
-const Ticket = ({ ticket, users, darkMode }) => {
+const Ticket = ({ ticket, users, darkMode, onEdit, onDelete }) => {
   const user = users.find(u => u.id === ticket.userId);
 
   return (
@@ -17,8 +18,14 @@ const Ticket = ({ ticket, users, darkMode }) => {
           </span>
         )}
       </div>
+
       <h4>{ticket.title}</h4>
       <p>{ticket.description}</p>
+
+      <div className="ticket-actions">
+        <button onClick={() => onEdit(ticket)} className="edit-btn">✏️ Düzenle</button>
+        <button onClick={() => onDelete(ticket.id)} className="delete-btn">🗑️ Sil</button>
+      </div>
     </div>
   );
 };

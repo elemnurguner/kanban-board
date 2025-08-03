@@ -1,108 +1,82 @@
-/* .add-task-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 15px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
 
-.add-task-form input[type="text"],
-.add-task-form select {
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  width: 100%;
+/* Add Task Form container (modal) */
+.navbar-task-form {
+  position: absolute;
+  top: 70px; /* Navbar'ın hemen altında */
+  right: 20px;
+  width: 360px;
+  max-width: 90vw;
+  max-height: calc(100vh - 90px); /* viewport yüksekliğinin navbar hariç kısmı */
+  background-color: rgba(61, 69, 123, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  overflow-y: auto; /* içerik taşarsa scroll */
+  z-index: 10500;
   box-sizing: border-box;
-}
-
-.add-task-form button {
-  padding: 8px 12px;
-  background-color: #2a75f3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
   transition: background-color 0.3s ease;
 }
 
-.add-task-form button:hover {
-  background-color: #155bc1;
-} */
+/* Form içi stiller */
 .add-task-form {
-  background-color: #2e2e42;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 247, 255, 0.2);
-  max-width: 600px;
-  margin: 2rem auto;
-  transition: all 0.4s ease-in-out;
-}
-
-.add-task-form:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(191, 0, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .add-task-form h2 {
   color: #00f7ff;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  user-select: none;
 }
 
-.add-task-form input,
-.add-task-form textarea,
+.add-task-form input[type="text"],
 .add-task-form select {
   width: 100%;
   padding: 12px 16px;
-  margin-bottom: 1rem;
+  border-radius: 10px;
   border: none;
-  border-radius: 12px;
   background-color: #1e1e2f;
   color: #e0e0e0;
   font-size: 1rem;
   outline: none;
   transition: box-shadow 0.3s ease;
+  box-sizing: border-box;
 }
 
-.add-task-form input:focus,
-.add-task-form textarea:focus,
+.add-task-form input[type="text"]:focus,
 .add-task-form select:focus {
-  box-shadow: 0 0 0 2px #477c7e;
+  box-shadow: 0 0 0 3px #477c7e;
 }
 
 .add-task-form button {
-  width: 100%;
-  padding: 12px;
+  padding: 14px;
   background: linear-gradient(45deg, #00f7ff, #bf00ff);
   color: white;
   font-weight: bold;
   border: none;
   border-radius: 14px;
   cursor: pointer;
-  transition: background 0.4s, transform 0.2s;
+  transition: background 0.4s ease, transform 0.2s ease;
+  user-select: none;
 }
 
 .add-task-form button:hover {
   transform: scale(1.05);
   background: linear-gradient(45deg, #00d9ff, #9f00e0);
 }
-.fancy-button {
-  background: linear-gradient(45deg, #1e90ff, #00bcd4);
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
-}
 
-.fancy-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 188, 212, 0.5);
+/* Responsive */
+@media (max-width: 480px) {
+  .navbar-task-form {
+    width: 90vw;
+    right: 5vw;
+    max-height: calc(100vh - 80px);
+  }
+
+  .navbar-search-input {
+    width: 140px;
+  }
 }

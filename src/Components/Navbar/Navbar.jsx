@@ -9,15 +9,15 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 function Navbar({ 
   setGrouping, 
   setOrdering, 
-  onAddTask,
-  darkMode,
-  setDarkMode,
-  searchTerm,
-  setSearchTerm
+  onAddTask, 
+  darkMode, 
+  setDarkMode, 
+  searchTerm, 
+  setSearchTerm 
 }) {
   const groupingOptions = ['Status', 'User', 'Priority'];
   const orderingOptions = ['Title', 'Priority'];
-  
+
   const [optionsView, setOptionsView] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
@@ -42,60 +42,65 @@ function Navbar({
   };
 
   return (
-    <div className='navbar-main'>
-      <div className='navbar-options-dropdown'>
-        <button 
-          id="navbar-dropdown-button" 
-          onClick={toggleOptions}
-          aria-label="Display options"
-        >
-          <TuneIcon sx={{ fontSize: "18px" }} />
-          <span id="navbar-dropdown-text">Göster</span>
-          <ArrowDropDownIcon />
-        </button>
-
-        {optionsView && (
-          <div className='navbar-options'>
-            <div className='navbar-option'>
-              <label htmlFor="grouping">Grup</label>
-              <select
-                id="grouping"
-                value={localStorage.getItem('grouping') || 'Status'}
-                onChange={handleGroupingChange}
-              >
-                {groupingOptions.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
+    <div className='navbar-main' >
+      {/* Sol bölüm */}
+      <div className='navbar-left'>
+        <div className='navbar-options-dropdown'>
+          <button 
+            id="navbar-dropdown-button" 
+            onClick={toggleOptions} 
+            aria-label="Display options"
+          >
+            <TuneIcon sx={{ fontSize: "18px" }} />
+            <span id="navbar-dropdown-text">Göster</span>
+            <ArrowDropDownIcon />
+          </button>
+          {optionsView && (
+            <div className='navbar-options'>
+              <div className='navbar-option'>
+                <label htmlFor="grouping">Grup</label>
+                <select
+                  id="grouping"
+                  value={localStorage.getItem('grouping') || 'Status'}
+                  onChange={handleGroupingChange}
+                >
+                  {groupingOptions.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+              <div className='navbar-option'>
+                <label htmlFor="ordering">Sıralama</label>
+                <select
+                  id="ordering"
+                  value={localStorage.getItem('ordering') || 'Title'}
+                  onChange={handleOrderingChange}
+                >
+                  {orderingOptions.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-
-            <div className='navbar-option'>
-              <label htmlFor="ordering">  Sıralama</label>
-              <select
-                id="ordering"
-                value={localStorage.getItem('ordering') || 'Title'}
-                onChange={handleOrderingChange}
-              >
-                {orderingOptions.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      <div className="navbar-controls">
+      {/* Orta bölüm */}
+      <div className='navbar-center'>
         <input
           type="text"
           aria-label="Search tasks"
-          placeholder="Search tasks..."
+          placeholder="Arama Yap"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
           className="navbar-search-input"
         />
+      </div>
 
-        <button 
+      {/* Sağ bölüm */}
+      <div className='navbar-right'>
+        <button
           onClick={() => setDarkMode(!darkMode)}
           className="theme-toggle"
           aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -104,13 +109,16 @@ function Navbar({
           {darkMode ? ' Açık Mod' : ' Koyu Mod'}
         </button>
 
-        <button 
+        <button
           onClick={toggleForm}
           className="add-task-button"
           aria-label="Add new task"
-        >Görev Ekle </button>
+        >
+          Görev Ekle
+        </button>
       </div>
 
+      {/* Görev ekleme formu açılır */}
       {showForm && (
         <div className="navbar-task-form">
           <AddTaskForm 

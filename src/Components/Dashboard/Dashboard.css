@@ -1,116 +1,67 @@
+/* ----------- DASHBOARD ANA KISIM ----------- */
 .dashboard-main {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 20px;
-  padding: 20px;
+  gap: 24px;
+  padding: 100px 20px 40px 20px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1e1e2f, #2c2c3e);
-  font-family: 'Montserrat', sans-serif;
-  flex-wrap: nowrap;
-  width: 100%;
-  box-sizing: border-box;
-  padding-top: 80px;
-  transition: background 0.5s ease-in-out;
+  background: linear-gradient(135deg, #e0e5ec, #f9fbff);
+  transition: background 0.3s ease;
 }
 
+body.dark-mode .dashboard-main {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
 
-
+/* ----------- LISTE / SÜTUN KUTULARI ----------- */
 .dashboard-list {
-  background-color: #2b2b40;
+  background-color: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 255, 255, 0.05);
-  width: 300px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  width: 320px;
   display: flex;
   flex-direction: column;
-  padding: 14px;
+  padding: 16px;
   box-sizing: border-box;
-  backdrop-filter: blur(6px);
-  transition: all 0.3s ease-in-out;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dashboard-list:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
-
-.dashboard-list h3 {
-  margin-bottom: 10px;
-  color: rgba(0,0,0,0.8);
-  font-weight: 600;
-}
-
-
-.dashboard-list-header-controls {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 270px;
-    margin: 10px
-}
-
-.dashboard-list-header-controls-info {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-left: 10px;
-}
-
-.dashboard-list-items-count {
-    margin: 0 8px;
-    color: #808080;
-}
-
-.dashboard-list-header {
-    margin-left: 10px;
-    font-size: 15px;
-    /* font-weight: 600; */
-    color:rgba(0, 0, 0, .8);
-}
-
-@media screen and (max-width: 920px) {
-    .dashboard-main {
-        height: fit-content;
-        width: 100vw;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
-    }
-}
-.ticket-tags {
-  margin-top: 8px;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.ticket-tag {
-  padding: 5px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  color: white;
-  background-color: #00bcd4;
-  font-weight: 500;
-  box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
-  transition: all 0.3s ease;
-}
 body.dark-mode .dashboard-list {
-  background-color: #2a2a3c;
-  box-shadow: 0 2px 16px rgba(0, 255, 255, 0.05);
+  background-color: #2a2e42;
+  box-shadow: 0 8px 20px rgba(191, 0, 255, 0.1);
+  color: #d1d5db;
 }
 
-body.dark-mode .ticket-card {
-  background-color: #2d2d3d;
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(191, 0, 255, 0.1);
+/* Başlık */
+.dashboard-list h3 {
+  margin-bottom: 14px;
+  font-weight: 700;
+  font-size: 20px;
+  color: #2c3e50;
+  user-select: none;
+}
+
+body.dark-mode .dashboard-list h3 {
+  color: #cbd5e0;
+}
+
+/* RESPONSİVE */
+@media (max-width: 920px) {
+  .dashboard-main {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 90px;
+  }
+  .dashboard-list {
+    width: 90vw;
+    max-width: 500px;
+  }
 }

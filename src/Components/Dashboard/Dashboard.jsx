@@ -1,33 +1,43 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from "react";//react  kutuphanesini içeri aktarıyoruz  çünkü jsx yapısını kullancağız 
 import './Dashboard.css';
 import '../Ticket/Ticket.css';
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { TAG_COLORS } from '../../constants/tagColors';
-
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";//sürekle barak bileşenleri için react biatiful dnd  işlemleri 
+import { TAG_COLORS } from '../../constants/tagColors';//etiket renklerini içe aktarıyoruz
+//ana bileşen dashboard
+//props  ile gelen veriler
+//grouping: Görevlerin hangi kritere göre gruplandığını belirtir (Durum, Kullanıcı, Öncelik)
+//ordering: Görevlerin hangi kritere göre sıralandığını belirtir (Başlık, Öncelik)
+//statuses: Mevcut durumları içerir
+//priorityMap: Önceliklerin adlarını içerir
+//tasks: Görevleri içerir
+//users: Kullanıcıları içerir
+//onDragEnd: Görev sürüklendiğinde çağrılan fonksiyon
+//searchTerm: Arama terimini içerir
 function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [], onDragEnd, searchTerm = '' }) {
 
   // Arama filtreleme: searchTerm varsa tasks'i filtrele
   const filteredTasks = tasks.filter(task => {
-    const search = searchTerm.toLowerCase();
-
+    const search = searchTerm.toLowerCase();// arama terimini  kcuk harflere çevir 
+//başlık aıklama  kullnıcı adı durum ve öncelik adını arama terimi ile karşılaştır
     const titleMatch = task.title?.toLowerCase().includes(search);
     const descriptionMatch = task.description?.toLowerCase().includes(search);
 
-    const user = users.find(u => u.id === task.userId);
+    const user = users.find(u => u.id === task.userId);//ilgili  kullanıcıyı  bul
     const userMatch = user?.name?.toLowerCase().includes(search);
 
     const statusMatch = task.status?.toLowerCase().includes(search);
     const priorityName = priorityMap?.[task.priority]?.toLowerCase() || '';
     const priorityMatch = priorityName.includes(search);
 
-    return titleMatch || descriptionMatch || userMatch || statusMatch || priorityMatch;
+    return titleMatch || descriptionMatch || userMatch || statusMatch || priorityMatch;// eğer herhangi biri eşleşiyorsa  bu taskı goster
   });
 
   // Gruplama & sıralama filtreden sonra filteredTasks üzerinden yapılır
   const ticketMap = useMemo(() => {
-    if (!filteredTasks.length) return [];
+    if (!filteredTasks.length) return [];// eğer filtrelenmiş görev yoksa boş dizi döner
 
     let groupedData = [];
+    // Gruplama kriterine göre görevleri grupla
     switch (grouping) {
       case "Status":
         groupedData = statuses.map(status =>
@@ -47,19 +57,19 @@ function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [
       default:
         groupedData = [filteredTasks];
     }
-
+//her  bir  grup içinde  gorevleri sıralama kriterlerine gore sırala
     return groupedData.map(group => {
-      const sorted = [...group];
+      const sorted = [...group];//diziyi kopyala
       if (ordering === "Title") {
-        sorted.sort((a, b) => a.title.localeCompare(b.title));
+        sorted.sort((a, b) => a.title.localeCompare(b.title));// başlığa göre alfabetik sıralama
       } else if (ordering === "Priority") {
-        sorted.sort((a, b) => b.priority - a.priority);
+        sorted.sort((a, b) => b.priority - a.priority);// önceliğe göre azalan sıralama
       }
       return sorted;
     });
   }, [filteredTasks, grouping, ordering, statuses, users]);
 
-  // Diğer kod aynen kalır...
+  // Grupların başlıklarını belirle yani  grupbaşlıgı uretici  indexe gore grup adını dondur 
   const getGroupTitle = (idx) => {
     switch (grouping) {
       case "Status": return statuses[idx] || `Group ${idx + 1}`;
@@ -70,6 +80,7 @@ function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [
   };
 
   return (
+    //tüm sürükle bırak yapısnı  oluşturan context bileşeni
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="dashboard-main">
         {ticketMap.map((ticketList, idx) => (
@@ -80,7 +91,10 @@ function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                <h3>{getGroupTitle(idx)} ({ticketList.length})</h3>
+                
+               <h3>{getGroupTitle(idx)} ({ticketList.length})</h3>   {/*grup başlığı ve gorev sayısı */}
+                               
+                 {/* Bu grubun her görevi (kart) */}
 
                 {ticketList.map((ticket, index) => (
                   <Draggable key={ticket.id} draggableId={ticket.id} index={index}>
@@ -93,6 +107,8 @@ function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [
                       >
                         <div className="ticket-main">
                           <div className="ticket-header">
+                            {/* Kartın üst kısmı: id + kullanıcı */}
+
                             <div className="ticket-id">{ticket.id}</div>
                             {grouping !== "User" && (
                               <div className="ticket-user">
@@ -100,13 +116,18 @@ function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [
                               </div>
                             )}
                           </div>
+                            {/* Kartın içeriği */}
+
                           <div className="ticket-content">
                             <div className="ticket-title"><b>{ticket.title}</b></div>
+                            {/* Öncelik sadece gruplama Priority değilse gösterilir */}
+
                             {grouping !== "Priority" && (
                               <div className="ticket-priority">
                                 Priority: {priorityMap?.[ticket.priority] || "N/A"}
                               </div>
                             )}
+                            {/* Etiketler gösterilir */}
 
                             <div className="ticket-tags">
                               {ticket.tag && ticket.tag.map((tag, i) => (
@@ -126,6 +147,8 @@ function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [
                     )}
                   </Draggable>
                 ))}
+               {/* Sürükleme alanı dolu görünmesi için gerekli placeholder */}
+
                 {provided.placeholder}
               </div>
             )}
@@ -135,5 +158,6 @@ function Dashboard({ grouping, ordering, statuses, priorityMap, tasks, users = [
     </DragDropContext>
   );
 }
+// Bileşeni dışa aktararak diğer dosyalarda kullanılabilir hale getiriyoruz
 
 export default Dashboard;
