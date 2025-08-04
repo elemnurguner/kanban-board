@@ -15,9 +15,7 @@ Modern tasarımı, kullanıcı dostu arayüzü ve esnek yapısıyla iş takibini
 - ✅ Kart Bazlı Modern UI
 - ✅ Sürükle-Bırak için hazır altyapı
 
-## 🖼️ Ekran Görüntüsü
 
-![Ekran Görüntüsü]("kanban-board.png")
 
 ## 🛠️ Kullanılan Teknolojiler
 
